@@ -1,4 +1,12 @@
 :root {
+    // Irpinia theme
+    &:has(body[data-theme="irpinia"]) {
+        --background-color: #0c200d;
+        --text-color: #ddd;
+        --accent-color: #98e5a5;
+        --footnote-color: #6b946c;
+    }
+
     // Default theme (Terminus)
     &:has(body[data-theme="terminus"]) {
         --background-color: #211f1a;
