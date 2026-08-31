@@ -1,46 +1,44 @@
-{%- set source_image_path = page.colocated_path ~ src -%}
-{%- set alt_text = alt -%}
-{%- set caption = caption | default(value="") -%}
-{%- set lazy_load = lazy | default(value=true) -%}
-
 {#- Generates responsive images from a given high-resolution source image -#}
+{#- Tera V2 components are hygienic, so `page` and `config` are passed in. -#}
 
+{%- component ui.responsive_image(src, alt, page, config, caption="", lazy=true) -%}
+{%- set source_image_path = page.colocated_path ~ src -%}
 {%- set metadata = get_image_metadata(path=source_image_path) -%}
-{%- set source_width = metadata.width -%}
 
 {%- set image_candidates = [] -%}
 {%- for width in config.extra.responsive_images.widths -%}
-    {%- if source_width >= width -%}
+    {%- if metadata.width >= width -%}
         {%- set resized_image = resize_image(path=source_image_path, width=width, op="fit_width", quality=80) -%}
-        {%- set candidate = resized_image.url ~ " " ~ width ~ "w" -%}
-        {%- set_global image_candidates = image_candidates | concat(with=candidate) -%}
+        {%- set_global image_candidates = [...image_candidates, resized_image.url ~ " " ~ width ~ "w"] -%}
     {%- endif -%}
 {%- endfor -%}
 
 {%- set fallback_width = config.extra.responsive_images.fallback_width -%}
 {%- set fallback_image = resize_image(path=source_image_path, width=fallback_width, height=fallback_width, op="fit") -%}
+{%- set fallback_height = (fallback_image.width / (metadata.width / metadata.height)) | round(method="floor") | int -%}
 
-{%- if caption -%}
-<figure>
-{% endif -%}
+{#- Browser hint: main content width will max out at 784px in practice -#}
+{%- if config.extra.layout == "full-width" -%}
+    {%- set sizes = "(min-width: 700px) calc(82vw + 46px), calc(100vw - 40px)" -%}
+{%- else -%}
+    {%- set sizes = "(min-width: 920px) 784px, (min-width: 700px) calc(82vw + 46px), calc(100vw - 40px)" -%}
+{%- endif -%}
+{%- if lazy -%}
+    {%- set loading = ' loading="lazy"' -%}
+{%- else -%}
+    {%- set loading = ' fetchpriority="high"' -%}
+{%- endif -%}
 
-<img src="{{ fallback_image.url | safe }}" alt="{{ alt_text }}"
-     width="{{ fallback_image.width }}" height="{{ fallback_image.width / (metadata.width / metadata.height) | round(method="floor") }}"
-     {% if config.extra.layout == "full-width" -%}
-     sizes="(min-width: 700px) calc(82vw + 46px), calc(100vw - 40px)"
-     {%- else -%}
-     sizes="(min-width: 920px) 784px, (min-width: 700px) calc(82vw + 46px), calc(100vw - 40px)" {# Browser hint: main content width will max out at 784px in practice #}
-     {%- endif %}
-     srcset="{{ image_candidates | join(sep=",\n             ") | safe }}"
-     {%- if lazy_load %}
-     loading="lazy"
-     {%- else %}
-     fetchpriority="high"
-     {%- endif -%}>
-
+{#- The tag is emitted on a single line so Markdown treats it as an HTML block -#}
+{#- rather than wrapping the image in a paragraph. -#}
 {%- if caption %}
-    <figcaption>
-        <p>{{ caption | markdown(inline=true) | safe }}</p>
-    </figcaption>
+<figure>
+<img src="{{ fallback_image.url | safe }}" alt="{{ alt }}" width="{{ fallback_image.width }}" height="{{ fallback_height }}" sizes="{{ sizes }}" srcset="{{ image_candidates | join(sep=", ") | safe }}"{{ loading | safe }}>
+<figcaption>
+<p>{{ caption | markdown(inline=true) | safe }}</p>
+</figcaption>
 </figure>
+{%- else %}
+<img src="{{ fallback_image.url | safe }}" alt="{{ alt }}" width="{{ fallback_image.width }}" height="{{ fallback_height }}" sizes="{{ sizes }}" srcset="{{ image_candidates | join(sep=", ") | safe }}"{{ loading | safe }}>
 {%- endif %}
+{%- endcomponent ui.responsive_image -%}

@@ -22,13 +22,13 @@ changes.
 * SEO friendly (better OpenGraph support, will add Schema.org eventually)
 * No post image previews for a cleaner look
 
-[GitHub-style alerts]: https://ebkalderon.github.io/terminus/blog/shortcodes/#alert-shortcode
+[GitHub-style alerts]: https://ebkalderon.github.io/terminus/blog/shortcodes/#alert-component
 
 ## Features
 
 - [x] Perfect baseline Lighthouse score (Performance, Accessibility, Best Practices and SEO).
 - [x] [Social media icons in footer](./theme.toml#L70-L73)
-- [x] [Custom shortcodes](https://ebkalderon.github.io/terminus/blog/shortcodes/)
+- [x] [Custom components](https://ebkalderon.github.io/terminus/blog/shortcodes/)
 - [x] Copy button on code blocks
 - [ ] [Comprehensive documentation] (still working on it!)
 - [ ] Searchable archive page
@@ -40,6 +40,8 @@ changes.
 [Comprehensive documentation]: https://ebkalderon.github.io/terminus/
 
 ## Getting Started
+
+Terminus requires Zola 0.23.0 or newer, which templates with Tera V2.
 
 ### Manual Installation
 

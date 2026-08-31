@@ -19,17 +19,17 @@
 {%- endblock -%}
 
 {%- block main -%}
-{%- filter indent -%}{%- filter indent -%}
+{%- filter indent(width=8) | safe -%}
 
 {%- if section.content -%}
 <header class="content {%- if section.extra.framed %} framed{%- endif -%}">
     {{ section.content | indent | safe }}
 </header>
 {%- endif -%}
-{%- for page in paginator.pages | default(value=section.pages) -%}
-{{ post_macros::excerpt(page=page) }}
+{%- for page in paginator?.pages | default(value=section.pages) -%}
+{{ <post.excerpt page={page} config={config} lang={lang} /> }}
 {% endfor -%}
 {% include "partials/pagination.html" %}
 
-{%- endfilter -%}{%- endfilter -%}
+{%- endfilter -%}
 {%- endblock -%}

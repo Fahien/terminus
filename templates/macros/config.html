@@ -1,12 +1,13 @@
-{%- macro get(setting, default_global_value="") -%}
-    {%- if page.ancestors -%}
-        {%- for ancestor in page.ancestors | reverse -%}
-            {%- set section_data = get_section(path=ancestor, metadata_only=true) -%}
-            {%- if section_data is defined and setting in section_data.extra -%}
-                {%- set_global ancestor_setting_enabled = section_data.extra[setting] -%}
-                {%- break -%}
-            {%- endif -%}
-        {%- endfor -%}
-    {%- endif -%}
-    {{- page.extra[setting] or section.extra[setting] or ancestor_setting_enabled or config.extra[setting] or default_global_value -}}
-{%- endmacro -%}
+{#- Resolves `setting` from the page, its section, that section's ancestors and -#}
+{#- finally the site config. Tera V2 components are hygienic, so everything the -#}
+{#- lookup inspects has to be handed in by the caller. -#}
+{%- component config.get(setting: string, page_extra, section_extra, ancestors, config_extra, default_global_value=false) -%}
+    {%- for ancestor in ancestors | reverse -%}
+        {%- set section_data = get_section(path=ancestor, metadata_only=true) -%}
+        {%- if section_data is defined and section_data.extra is containing(pat=setting) -%}
+            {%- set_global ancestor_setting_enabled = section_data.extra[setting] -%}
+            {%- break -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {{- page_extra[setting] or section_extra[setting] or ancestor_setting_enabled or config_extra[setting] or default_global_value -}}
+{%- endcomponent config.get -%}

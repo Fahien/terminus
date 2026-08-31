@@ -7,7 +7,7 @@
 {%- endblock -%}
 
 {%- block main -%}
-{%- filter indent -%}{%- filter indent -%}
+{%- filter indent(width=8) | safe -%}
 
 {%- if section.content -%}
 <header class="content {%- if section.extra.framed %} framed{%- endif -%}">
@@ -21,20 +21,20 @@
     {%- set blog_section = get_section(path=section.extra.section_path, lang=lang) -%}
     {%- set num_top_posts = section.extra.max_posts | default(value=blog_section.pages | length) -%}
     {%- if blog_section.paginate_reversed == true -%}
-        {%- set top_posts = blog_section.pages | reverse | slice(end=num_top_posts) -%}
+        {%- set top_posts = (blog_section.pages | reverse)[:num_top_posts] -%}
     {%- else -%}
-        {%- set top_posts = blog_section.pages | slice(end=num_top_posts) -%}
+        {%- set top_posts = blog_section.pages[:num_top_posts] -%}
     {%- endif -%}
 {%- else -%}
     {%- set blog_section = section -%}
     {%- set top_posts = blog_section.pages -%}
 {%- endif -%}
 
-{%- for page in paginator.pages | default(value=top_posts) %}
-{{ post_macros::excerpt(page=page) }}
+{%- for page in paginator?.pages | default(value=top_posts) %}
+{{ <post.excerpt page={page} config={config} lang={lang} /> }}
 {%- endfor -%}
 
-{%- if paginator and paginator.number_pagers > 1 %}
+{%- if paginator is defined and paginator.number_pagers > 1 %}
 {% include "partials/pagination.html" %}
 {%- elif blog_section.paginate_by and blog_section.pages | length > section.extra.max_posts | default(value=blog_section.paginate_by) %}
 <nav class="pagination">
@@ -44,5 +44,5 @@
 </nav>
 {%- endif -%}
 
-{%- endfilter -%}{%- endfilter -%}
+{%- endfilter -%}
 {%- endblock -%}

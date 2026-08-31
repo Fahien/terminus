@@ -1,4 +1,4 @@
-{%- if paginator and paginator.number_pagers > 1 -%}
+{%- if paginator is defined and paginator.number_pagers > 1 -%}
 <nav class="pagination">
     <ul>
         {%- if paginator.previous %}

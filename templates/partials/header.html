@@ -1,8 +1,8 @@
 <div class="header-container">
     <span class="header-logo-container">
-        {% filter indent -%}{%- filter indent -%}
+        {% filter indent(width=8) | safe -%}
         {% include "partials/logo.html" %}
-        {%- endfilter -%}{%- endfilter %}
+        {%- endfilter %}
     </span>
 </div>
 {% if config.extra.main_menu -%}
