@@ -7,6 +7,34 @@
         --footnote-color: #6b946c;
     }
 
+    // irlug.org theme: colori del sito PHP-Nuke storico (2003-2005).
+    // Lo sfondo qui e' quello dei riquadri bianchi: la pagina attorno e'
+    // verde scuro, vedi _irlug-org.scss per il resto dello stile.
+    &:has(body[data-theme="irlug.org"]) {
+        --background-color: #ffffff;
+        --text-color: #000000;
+        --accent-color: #006600;
+        --footnote-color: #555555;
+
+        // Gli avvisi del tema sono tarati su sfondi scuri: su bianco
+        // servono bordi e titoli piu' scuri.
+        --alert-note-border: #555555;
+        --alert-note-bg: #999999;
+        --alert-note-code: #dddddd;
+        --alert-tip-border: #2f6f00;
+        --alert-tip-bg: #a6e22e;
+        --alert-tip-code: #d8f0a8;
+        --alert-info-border: #005f73;
+        --alert-info-bg: #66d9ef;
+        --alert-info-code: #cdeff7;
+        --alert-warning-border: #8a5a00;
+        --alert-warning-bg: #eec35e;
+        --alert-warning-code: #f7e4b0;
+        --alert-danger-border: #b0003a;
+        --alert-danger-bg: #fd2774;
+        --alert-danger-code: #f8c0d2;
+    }
+
     // Default theme (Terminus)
     &:has(body[data-theme="terminus"]) {
         --background-color: #211f1a;

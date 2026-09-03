@@ -1,0 +1,239 @@
+// Tema "irlug.org": replica del sito storico www.irlug.org (PHP-Nuke 6.0,
+// 2003-2005, tema custom "IRLug"). Il foglio di stile originale
+// (themes/IRLug/style/style.css) non e' mai stato archiviato dalla Wayback
+// Machine: colori e struttura vengono dagli attributi inline dell'HTML
+// (bgcolor, font, class); i caratteri sono quelli tipici di PHP-Nuke.
+// I quattro colori base stanno in _themes.scss; qui c'e' tutto il resto.
+//
+// Struttura del sito originale:
+//   <body bgcolor="#006600">           verde scuro attorno al contenitore (840px)
+//   fascia header bgcolor="#66cc99"     riga bianca col logo, poi i link di navigazione
+//   area contenuti bgcolor="#d3ead2"    colonna laterale e notizie
+//   riquadri bianchi con bordo nero     tabella nera con cellspacing=1 e celle bianche
+//   <body link="0000ff">                link blu classici
+
+$irlug-org-pagina: #006600;
+$irlug-org-fascia: #66cc99;
+$irlug-org-area: #d3ead2;
+$irlug-org-riquadro: #fff;
+$irlug-org-bordo: #000;
+$irlug-org-link: #0000ff;
+
+body[data-theme="irlug.org"] {
+    --font-size: 0.8125rem;
+    --line-height: 1.5em;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background: $irlug-org-pagina;
+
+    @media (max-width: 684px) {
+        --font-size: 0.875rem;
+    }
+
+    &.layout-left,
+    &.layout-center,
+    &.layout-full-width {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 24px 0;
+        border: none;
+
+        @media (max-width: 684px) {
+            padding: 0;
+        }
+    }
+
+    &.layout-full-width {
+        max-width: 100%;
+    }
+
+    // ---- Header: riga bianca con il logo, fascia verde menta con i link ----
+
+    .header {
+        background: $irlug-org-fascia;
+
+        @media (max-width: 684px) {
+            background: $irlug-org-riquadro;
+            align-items: center;
+            padding-inline-end: 10px;
+        }
+    }
+
+    .header-container {
+        background: $irlug-org-riquadro;
+        padding: 8px 12px;
+    }
+
+    .header-logo-container {
+        justify-content: flex-end;
+
+        &::after {
+            display: none;
+        }
+    }
+
+    .logo {
+        gap: 12px;
+        padding: 0;
+        background: transparent;
+        color: $irlug-org-pagina;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.6rem;
+    }
+
+    .img-logo,
+    .logo-img {
+        height: 56px;
+        margin: 0;
+    }
+
+    .main-menu {
+        margin: 0;
+        padding: 3px 12px;
+
+        &-items {
+            justify-content: center;
+            gap: 4px 28px;
+            padding: 0;
+
+            > li > a {
+                color: $irlug-org-bordo;
+                font-weight: bold;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            @media (max-width: 684px) {
+                &:popover-open {
+                    background: $irlug-org-riquadro;
+                    border: 1px solid $irlug-org-bordo;
+                    box-shadow: none;
+                }
+            }
+        }
+
+        &-dropdown-button {
+            color: $irlug-org-bordo;
+            border-color: $irlug-org-bordo;
+
+            &::after {
+                border-top-color: $irlug-org-bordo;
+            }
+        }
+    }
+
+    // ---- Area contenuti: riquadri bianchi bordati sul verde chiaro ----
+
+    main {
+        flex: 1;
+        background: $irlug-org-area;
+        padding: 10px 12px;
+    }
+
+    main .post,
+    main .content,
+    main .framed,
+    main .archive-year {
+        background: $irlug-org-riquadro;
+        border: 1px solid $irlug-org-bordo;
+        margin: 10px 0;
+        padding: 10px 14px;
+    }
+
+    a {
+        color: $irlug-org-link;
+    }
+
+    // Titolo delle notizie: icona e testo in grassetto nero
+    .post-title {
+        color: $irlug-org-bordo;
+        border-bottom: 1px solid $irlug-org-fascia;
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+
+        &::before {
+            content: '\25AA\00A0';
+            color: $irlug-org-pagina;
+        }
+
+        &::after {
+            display: none;
+        }
+
+        a {
+            color: inherit;
+        }
+    }
+
+    // Elenchi puntati col puntino "·" in grassetto del menu originale
+    .content ul li {
+        list-style: '\00B7\00A0';
+
+        &::marker {
+            color: $irlug-org-bordo;
+            font-weight: bold;
+        }
+    }
+
+    // Blocchi per anno come i blocchi laterali originali: barra del titolo
+    // (era table-title.png) sopra il riquadro bianco
+    main .archive-year {
+        padding-top: 0;
+
+        h2 {
+            margin: 0 -14px 10px;
+            padding: 3px 12px;
+            background: $irlug-org-fascia;
+            border-bottom: 1px solid $irlug-org-bordo;
+            font-size: 1.05em;
+        }
+
+        ul {
+            margin-block: 8px;
+        }
+    }
+
+    .archive-year ul li::before {
+        content: '\00B7';
+        color: $irlug-org-bordo;
+        font-weight: bold;
+    }
+
+    .post-navigation-title h2 {
+        background: $irlug-org-area;
+    }
+
+    // ---- Footer: testo piccolo centrato sul verde scuro, come footmsg ----
+
+    .footer {
+        padding: 16px 0;
+        color: $irlug-org-area;
+        font-size: 0.9em;
+
+        a {
+            color: inherit;
+        }
+
+        .socials {
+            padding-bottom: 10px;
+
+            .social-link > svg {
+                fill: $irlug-org-area;
+            }
+
+            .social-link:hover {
+                background: $irlug-org-fascia;
+
+                > svg {
+                    fill: $irlug-org-pagina;
+                }
+            }
+        }
+
+        .copyright {
+            color: $irlug-org-area;
+        }
+    }
+}

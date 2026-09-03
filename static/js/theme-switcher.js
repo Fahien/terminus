@@ -5,6 +5,7 @@ class ThemeSwitcher {
   constructor() {
     this.themes = {
       irpinia: "🐑 Irpinia",
+      "irlug.org": "🐧 irlug.org",
       terminus: "🔥 Terminus",
       "tokyo-night": "🌃 Tokyo Night",
       "solarized-dark": "🌅 Solarized",
